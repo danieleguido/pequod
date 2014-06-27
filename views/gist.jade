@@ -1,0 +1,37 @@
+doctype 5
+html
+  head
+    title= title
+    link(rel='stylesheet', href='/css/style.css')
+    script(src='http://localhost:35729/livereload.js')
+  body
+    if data.owner
+      sidebar
+        div.inner
+          h2.description= data.description
+
+          p= (new Date(data.updated_at)).toLocaleDateString()
+          p.author by 
+            a(href=data.owner.html_url) data.owner.login
+
+
+          p.made-with-pequod Made with 
+            a(href=data.owner.html_url) pequod
+
+      div.wrapper
+        
+
+        if files.readMe
+          div.description
+            :markdown= files.readMe.content
+
+        ul
+          each val, index in files.readMe
+            li= index + ': ' + val
+
+        ul
+          each val, index in data.files
+            li= index
+              ul
+                each v, i in val
+                 li= v + ' - ' + i
