@@ -4,7 +4,7 @@
  */
 
 exports.item = function(req, res){
-  console.log('ciao', req.params.gist_id);
+  console.log('importing', req.params.gist_id);
 
   request(
     {
@@ -18,8 +18,12 @@ exports.item = function(req, res){
           files = {
           };
 
+      // if there is an inde.html,
+
       // filter file to be put somewhere
       for( var i in data.files) {
+        if(i == 'index.html')
+          files.index =  data.files[i].raw_url;// https://gist.githubusercontent.com/mbostock/7882658/raw/109aa7cffcc9996d510fe70e1d65e5fd4489415c/index.html ;
         if(i == 'README.md')
           files.readMe = data.files[i]
         if(data.files[i].type == 'text/tab-separated-values') { // tsv files
@@ -27,9 +31,26 @@ exports.item = function(req, res){
           files.tsv.push(data.files[i]);
         }
       }
+      console.log("has index", files.index);
 
-      console.log(data);
-      res.render('gist', { title: 'Express GIST', data:data, files:files });
+      // if there is an index.html
+      if (files.index){
+        request({
+          url: files.index,
+          headers:{'User-Agent' : 'Mozilla/5.0'
+          }
+        }, function callback(error, response, body) {
+          // full body here
+          body = body.split(/\<\/body[^>]*>/).shift().split(/\<body[^>]*>/).pop();
+          //console.log("file hj")
+          //console.log(body)
+          res.render('gist', { title: 'Express GIST', data:data, files:files, body:body });
+        });
+      } else {
+        
+        res.render('gist', { title: 'Express GIST', data:data, files:files });
+      }
+      
     }
   );
 

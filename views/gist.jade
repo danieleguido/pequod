@@ -3,7 +3,6 @@ html
   head
     title= title
     link(rel='stylesheet', href='/css/style.css')
-    script(src='http://localhost:35729/livereload.js')
   body
     if data.owner
       sidebar
@@ -12,7 +11,7 @@ html
 
           p= (new Date(data.updated_at)).toLocaleDateString()
           p.author by 
-            a(href=data.owner.html_url) data.owner.login
+            a(href=data.owner.html_url)= data.owner.login
 
 
           p.made-with-pequod Made with 
@@ -25,13 +24,8 @@ html
           div.description
             :markdown= files.readMe.content
 
-        ul
-          each val, index in files.readMe
-            li= index + ': ' + val
+        if files.index
+          div.content!= body
 
-        ul
-          each val, index in data.files
-            li= index
-              ul
-                each v, i in val
-                 li= v + ' - ' + i
+
+        

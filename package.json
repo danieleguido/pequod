@@ -9,7 +9,7 @@
     "express": "~3.3.4",
     "jade": "~0.34.0",
     "request": "^2.36.0",
-    "marked": "^0.3.2"
+    "marked": "0.3.2"
   },
   "devDependencies": {
     "grunt": "~0.4.1",
