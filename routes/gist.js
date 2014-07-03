@@ -41,10 +41,12 @@ exports.item = function(req, res){
           }
         }, function callback(error, response, body) {
           // full body here
+          var style = body.match(/<style[^>]*>(.*?)<\/style[^>]*>/m);
+          console.log('style', style)
           body = body.split(/\<\/body[^>]*>/).shift().split(/\<body[^>]*>/).pop();
           //console.log("file hj")
           //console.log(body)
-          res.render('gist', { title: 'Express GIST', data:data, files:files, body:body });
+          res.render('gist', { title: 'Express GIST', data:data, files:files, body:body, style:style? style.pop():'' });
         });
       } else {
         
